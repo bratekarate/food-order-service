@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Builder
@@ -24,8 +23,8 @@ public class Restaurant {
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<MenuItem> menuItems = new ArrayList<>();
+    @Embedded
+    @NotNull
+    private Menu menu;
 
 }
