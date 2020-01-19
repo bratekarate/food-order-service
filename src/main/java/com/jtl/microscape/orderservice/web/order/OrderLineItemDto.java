@@ -17,4 +17,5 @@ public class OrderLineItemDto {
 
     @NotNull
     private final Integer quantity;
+
 }

@@ -9,9 +9,11 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Getter
 @ToString
-public class RestaurantOrderResponse {
-    private Long id;
+public class OrderRestaurantResponse {
+
+    private final Long id;
 
     @NotBlank
-    private String name;
+    private final String name;
+
 }
