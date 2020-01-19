@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/restaurants")
 public class RestaurantController {
 
     @GetMapping("")
