@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @ToString
-public class MenuItemResponse {
+public class OrderMenuItemResponse {
 
     @NotNull
     private final Long id;

@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +23,8 @@ public class OrderDto {
     private final Instant placedAt;
 
     @NotEmpty
-    private final List<OrderLineItemDto> orderLineItems;
+    @Valid
+    @Builder.Default
+    private final List<OrderLineItemDto> orderLineItems = new ArrayList<>();
 
 }
