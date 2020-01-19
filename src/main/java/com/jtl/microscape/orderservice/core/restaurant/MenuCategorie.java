@@ -24,7 +24,7 @@ public class MenuCategorie {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Restaurant menu;
+    private Restaurant restaurant;      // todo: does this work? Mapping to `Restaurant` although embedded `Menu` has `@OneToMany` association?
 
     @NotBlank
     private String caption;

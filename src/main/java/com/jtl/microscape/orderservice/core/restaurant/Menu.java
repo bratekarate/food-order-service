@@ -19,7 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Menu {
 
-    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    // todo: does this work? Mapping to `MenuCategorie` although it is mapped to  `Restaurant` in `@ManyToOne` association?
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<MenuCategorie> menuCategories = new ArrayList<>();
 
