@@ -1,5 +1,6 @@
 package com.jtl.microscape.orderservice.core.restaurant;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,9 @@ import java.util.List;
 
 @Entity
 @Builder
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Restaurant {
 
     @Id
@@ -23,6 +25,7 @@ public class Restaurant {
     private String name;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MenuItem> menuItems = new ArrayList<>();
 
 }

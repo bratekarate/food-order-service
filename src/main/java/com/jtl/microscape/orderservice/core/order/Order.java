@@ -3,6 +3,7 @@ package com.jtl.microscape.orderservice.core.order;
 import com.jtl.microscape.orderservice.core.customer.Customer;
 import com.jtl.microscape.orderservice.core.restaurant.Restaurant;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,9 @@ import java.util.List;
 
 @Entity
 @Builder
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
     @Id
@@ -34,6 +36,7 @@ public class Order {
     private Customer orderedBy;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<OrderLineItem> orderLineItems = new ArrayList<>();
 
 }

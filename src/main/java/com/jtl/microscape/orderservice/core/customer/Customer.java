@@ -1,5 +1,6 @@
 package com.jtl.microscape.orderservice.core.customer;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,9 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Builder
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
     @Id

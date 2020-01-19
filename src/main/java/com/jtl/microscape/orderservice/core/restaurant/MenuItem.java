@@ -1,5 +1,6 @@
 package com.jtl.microscape.orderservice.core.restaurant;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Builder
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MenuItem {
 
     @Id
