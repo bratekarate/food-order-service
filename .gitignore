@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Generated db scripts ###
+create.sql
