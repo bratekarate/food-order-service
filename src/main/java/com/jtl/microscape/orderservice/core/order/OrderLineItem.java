@@ -2,6 +2,7 @@ package com.jtl.microscape.orderservice.core.order;
 
 import com.jtl.microscape.orderservice.core.restaurant.MenuItem;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,9 @@ import javax.persistence.*;
 
 @Entity
 @Builder
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderLineItem {
 
     @Id
