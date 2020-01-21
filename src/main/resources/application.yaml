@@ -1,3 +1,4 @@
+
 spring:
   liquibase:
     enabled: false
@@ -20,11 +21,9 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+    type: org.apache.tomcat.jdbc.pool.DataSource
 
 # H2 DB will not be initialized when create.sql generation is enabled
 #spring.jpa.properties.javax.persistence.schema-generation.create-source: metadata
 #spring.jpa.properties.javax.persistence.schema-generation.scripts.action: create
 #spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target: create.sql
-
-
-
