@@ -9,20 +9,21 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Builder
 @Getter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotBlank
-    String name;
+    private String name;
 
     @NotNull
     @OneToOne(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    Menu menu;
+    private Menu menu;
 
     static RestaurantBuilder builder() {
         return new RestaurantBuilder();
