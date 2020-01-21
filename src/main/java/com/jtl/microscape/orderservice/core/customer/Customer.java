@@ -11,16 +11,17 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Builder
 @Getter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotBlank
-    String name;
+    private String name;
 
     static Customer.CustomerBuilder builder() {
         return new Customer.CustomerBuilder();

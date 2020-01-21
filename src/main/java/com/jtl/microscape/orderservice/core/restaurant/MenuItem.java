@@ -10,22 +10,23 @@ import java.math.BigDecimal;
 @Entity
 @Builder
 @Getter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotBlank
-    String name;
+    private String name;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    MenuCategorie menuCategorie;
+    private MenuCategorie menuCategorie;
 
     @NotNull
-    BigDecimal price;
+    private BigDecimal price;
 
 }

@@ -15,7 +15,7 @@ public class RestaurantTestDataCreator {
                 .build();
 
         Menu menu = restaurant.getMenu();
-        menu.restaurant = restaurant;
+        menu.setRestaurant(restaurant);
 
         MenuCategorie pizzen = MenuCategorie.builder()
                 .caption("Pizzen")

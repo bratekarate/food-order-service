@@ -9,23 +9,24 @@ import java.util.List;
 @Entity
 @Builder
 @Getter
+@Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Menu {
 
     @Id
-    Long id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    Restaurant restaurant;
+    private Restaurant restaurant;
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     @Builder.Default
-    List<MenuCategorie> menuCategories = new ArrayList<>();
+    private List<MenuCategorie> menuCategories = new ArrayList<>();
 
     void addToMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.menu = this;
+        menuCategorie.setMenu(this);
         menuCategories.add(menuCategorie);
     }
 
@@ -34,7 +35,7 @@ public class Menu {
     }
 
     void removeFromMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.menu = null;
+        menuCategorie.setMenu(null);
         menuCategories.remove(menuCategorie);
     }
 
