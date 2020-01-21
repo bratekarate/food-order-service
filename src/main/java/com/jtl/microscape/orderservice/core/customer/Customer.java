@@ -1,9 +1,6 @@
 package com.jtl.microscape.orderservice.core.customer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,16 +10,20 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @NotBlank
-    private String name;
+    String name;
+
+    static Customer.CustomerBuilder builder() {
+        return new Customer.CustomerBuilder();
+    }
 
 }
