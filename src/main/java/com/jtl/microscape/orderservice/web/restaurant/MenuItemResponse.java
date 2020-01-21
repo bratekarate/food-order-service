@@ -14,12 +14,12 @@ import java.math.BigDecimal;
 public class MenuItemResponse {
 
     @NotNull
-    private Long id;
+    private final Long id;
 
     @NotBlank
-    private String name;
+    private final String name;
 
     @NotNull
-    private BigDecimal price;
+    private final BigDecimal price;
 
 }
