@@ -5,23 +5,40 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Embeddable
+@Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Menu {
 
-    // todo: does this work? Mapping to `MenuCategorie` although it is mapped to  `Restaurant` in `@ManyToOne` association?
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Id
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     @Builder.Default
     private List<MenuCategorie> menuCategories = new ArrayList<>();
+
+    public void addToMenuCategories(MenuCategorie menuCategorie) {
+        menuCategorie.setMenu(this);
+        menuCategories.add(menuCategorie);
+    }
+
+    public void addAllToMenuCategories(List<MenuCategorie> menuCategories) {
+        menuCategories.forEach(this::addToMenuCategories);
+    }
+
+    public void removeFromMenuCategories(MenuCategorie menuCategorie) {
+        menuCategorie.setMenu(null);
+        menuCategories.remove(menuCategorie);
+    }
 
 }

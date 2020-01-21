@@ -23,8 +23,8 @@ public class Restaurant {
     @NotBlank
     private String name;
 
-    @Embedded
     @NotNull
+    @OneToOne(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Menu menu;
 
 }
