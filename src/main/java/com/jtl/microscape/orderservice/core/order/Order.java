@@ -18,6 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "order_")
 public class Order {
 
     @Id
@@ -38,5 +39,19 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<OrderLineItem> orderLineItems = new ArrayList<>();
+
+    public void addToOrderLineItems(OrderLineItem orderLineItem) {
+        orderLineItem.setOrder(this);
+        this.orderLineItems.add(orderLineItem);
+    }
+
+    public void addAllToOrderLineItems(List<OrderLineItem> orderLineItems) {
+        orderLineItems.forEach(this::addToOrderLineItems);
+    }
+
+    public void removeFromOrderLineItems(OrderLineItem orderLineItem) {
+        orderLineItem.setOrder(null);
+        this.orderLineItems.remove(orderLineItem);
+    }
 
 }

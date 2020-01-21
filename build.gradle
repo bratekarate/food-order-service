@@ -41,7 +41,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.apache.kafka:kafka-streams'
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'org.liquibase:liquibase-core'
+//    implementation 'org.liquibase:liquibase-core'
 
     compileOnly "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

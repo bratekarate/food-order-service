@@ -1,11 +1,30 @@
 spring:
-  liquibase:
-    enabled: false
+#  liquibase:
+#    enabled: false
   jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
+        flushMode: MANUAL # todo: works?
         jdbc:
           time_zone: UTC
-spring.jpa.properties.javax.persistence.schema-generation.create-source: metadata
-spring.jpa.properties.javax.persistence.schema-generation.scripts.action: create
-spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target: create.sql
+  h2:
+    console:
+      enabled: true
+      path: /console
+  datasource:
+    url: jdbc:h2:mem:testdb #;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+#
+#spring.jpa.properties.javax.persistence.schema-generation.create-source: metadata
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.action: create
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target: create.sql
+
+
+

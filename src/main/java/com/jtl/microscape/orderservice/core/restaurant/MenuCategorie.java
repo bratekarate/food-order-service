@@ -24,13 +24,27 @@ public class MenuCategorie {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Restaurant restaurant;      // todo: does this work? Mapping to `Restaurant` although embedded `Menu` has `@OneToMany` association?
+    private Menu menu;
 
     @NotBlank
     private String caption;
 
-    @OneToMany(mappedBy = "menuCategorie", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menuCategorie", fetch = FetchType.LAZY)
     @Builder.Default
     private List<MenuItem> menuItems = new ArrayList<>();
+
+    public void addToMenuCategories(MenuItem menuItems) {
+        menuItems.setMenuCategorie(this);
+        this.menuItems.add(menuItems);
+    }
+
+    public void addAllToMenuCategories(List<MenuItem> menuItems) {
+        menuItems.forEach(this::addToMenuCategories);
+    }
+
+    public void removeFromMenuCategories(MenuItem menuItem) {
+        menuItem.setMenuCategorie(null);
+        menuItems.remove(menuItem);
+    }
 
 }
