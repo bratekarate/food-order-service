@@ -15,3 +15,4 @@ Written in Java using Spring Boot. The main purpose of this project is to provid
 - Kafka as a message broker with Ktables for microservice communication and Saga (yet to come)
   - Consumers that have exclusive write access on shared domain objects
   - Producers that are called under the hood by Repository abstractions
+- Spring `RestControllers` that expose the web API using Dtos (No meaningful logic implemented yet)
