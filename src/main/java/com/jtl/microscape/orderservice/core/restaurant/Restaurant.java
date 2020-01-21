@@ -1,9 +1,6 @@
 package com.jtl.microscape.orderservice.core.restaurant;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,20 +8,24 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @NotBlank
-    private String name;
+    String name;
 
     @NotNull
     @OneToOne(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Menu menu;
+    Menu menu;
+
+    static RestaurantBuilder builder() {
+        return new RestaurantBuilder();
+    }
 
 }

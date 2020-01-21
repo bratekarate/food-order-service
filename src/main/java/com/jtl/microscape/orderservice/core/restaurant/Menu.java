@@ -1,9 +1,6 @@
 package com.jtl.microscape.orderservice.core.restaurant;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,33 +8,33 @@ import java.util.List;
 
 @Entity
 @Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Menu {
 
     @Id
-    private Long id;
+    Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    private Restaurant restaurant;
+    Restaurant restaurant;
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<MenuCategorie> menuCategories = new ArrayList<>();
+    List<MenuCategorie> menuCategories = new ArrayList<>();
 
-    public void addToMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.setMenu(this);
+    void addToMenuCategories(MenuCategorie menuCategorie) {
+        menuCategorie.menu = this;
         menuCategories.add(menuCategorie);
     }
 
-    public void addAllToMenuCategories(List<MenuCategorie> menuCategories) {
+    void addAllToMenuCategories(List<MenuCategorie> menuCategories) {
         menuCategories.forEach(this::addToMenuCategories);
     }
 
-    public void removeFromMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.setMenu(null);
+    void removeFromMenuCategories(MenuCategorie menuCategorie) {
+        menuCategorie.menu = null;
         menuCategories.remove(menuCategorie);
     }
 
