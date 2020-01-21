@@ -16,11 +16,11 @@ import java.util.List;
 public class MenuCategorieResponse {
 
     @NotBlank
-    private String caption;
+    private final String caption;
 
     @NotEmpty
     @Valid
     @Builder.Default
-    private List<MenuItemResponse> menuItems = new ArrayList<>();
+    private final List<MenuItemResponse> menuItems = new ArrayList<>();
 
 }
