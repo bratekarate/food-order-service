@@ -23,7 +23,7 @@ public class Restaurant {
     private String name;
 
     @NotNull
-    @OneToOne(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Menu menu;
 
     static RestaurantBuilder builder() {

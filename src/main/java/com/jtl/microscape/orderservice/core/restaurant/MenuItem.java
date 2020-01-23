@@ -25,7 +25,7 @@ public class MenuItem {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private MenuCategorie menuCategorie;
+    private MenuCategory menuCategory;
 
     @NotNull
     private BigDecimal price;

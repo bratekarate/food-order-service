@@ -25,20 +25,20 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<MenuCategorie> menuCategories = new ArrayList<>();
+    private List<MenuCategory> menuCategories = new ArrayList<>();
 
-    void addToMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.setMenu(this);
-        menuCategories.add(menuCategorie);
+    void addToMenuCategories(MenuCategory menuCategory) {
+        menuCategory.setMenu(this);
+        menuCategories.add(menuCategory);
     }
 
-    void addAllToMenuCategories(List<MenuCategorie> menuCategories) {
+    void addAllToMenuCategories(List<MenuCategory> menuCategories) {
         menuCategories.forEach(this::addToMenuCategories);
     }
 
-    void removeFromMenuCategories(MenuCategorie menuCategorie) {
-        menuCategorie.setMenu(null);
-        menuCategories.remove(menuCategorie);
+    void removeFromMenuCategories(MenuCategory menuCategory) {
+        menuCategory.setMenu(null);
+        menuCategories.remove(menuCategory);
     }
 
 }
