@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class Customer {
 
     @Id

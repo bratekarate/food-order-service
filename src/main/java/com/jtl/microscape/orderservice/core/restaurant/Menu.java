@@ -12,6 +12,7 @@ import java.util.List;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class Menu {
 
     @Id
@@ -19,6 +20,7 @@ public class Menu {
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @ToString.Exclude
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
