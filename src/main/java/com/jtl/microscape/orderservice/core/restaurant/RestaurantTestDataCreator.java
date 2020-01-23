@@ -2,12 +2,14 @@ package com.jtl.microscape.orderservice.core.restaurant;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class RestaurantTestDataCreator {
 
     private final RestaurantWriteRepository restaurantWriteRepository;

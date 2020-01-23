@@ -1,6 +1,5 @@
 package com.jtl.microscape.orderservice;
 
-import com.jtl.microscape.orderservice.core.customer.Customer;
 import com.jtl.microscape.orderservice.core.customer.CustomerRepository;
 import com.jtl.microscape.orderservice.core.customer.CustomerTestDataCreator;
 import com.jtl.microscape.orderservice.core.order.Order;
@@ -15,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Instant;
@@ -35,96 +35,90 @@ public class OrderServiceApplication {
                                     CustomerRepository customerRepository,
                                     RestaurantRepository restaurantRepository,
                                     PlatformTransactionManager transactionManager) {
-        return args -> {
+        return new CommandLineRunner() {
+            @Override
+            @Transactional
+            public void run(String... args) {
 
-            var transactionTemplate = new TransactionTemplate(transactionManager);
+                // use programmatic transactions to simulate multiple interactions in one method
+                var transactionTemplate = new TransactionTemplate(transactionManager);
 
-            // create and persist shared restaurant entities using read-only repositories
-            var savedRestaurant = transactionTemplate.execute(status -> {
-                Restaurant newRestaurant = restaurantTestDataCreator.create();
+                // create and persist shared entities using read-only repositories
+                var savedRestaurant = restaurantTestDataCreator.create();
+                var savedCustomer = customerTestDataCreator.create();
 
-                return newRestaurant;
-            });
+                // create and persist one order with an attached order line item
+                var savedOrder = transactionTemplate.execute(status -> {
+                    Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
 
-            // create and persist shared restaurant entities using read-only repositories
-            var savedCustomer = transactionTemplate.execute(status -> {
-                Customer newCustomer = customerTestDataCreator.create();
+                    Order newOrder = Order.builder()
+                            .orderedBy(customerRepository.findById(savedCustomer.getId()).orElse(null))
+                            .placedAt(Instant.now())
+                            .restaurant(fetchedRestaurant.orElse(null))
+                            .build();
 
-                return newCustomer;
-            });
+                    newOrder.addToOrderLineItems(OrderLineItem.builder()
+                            .menuItem(fetchedRestaurant
+                                    .map(restaurant -> restaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
+                                    .orElse(null))
+                            .quantity(2)
+                            .build());
 
-            // create and persist one order with an attached order line item
-            var savedOrder = transactionTemplate.execute(status -> {
-                Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
-
-                Order newOrder = Order.builder()
-                        .orderedBy(customerRepository.findById(savedCustomer.getId()).orElse(null))
-                        .placedAt(Instant.now())
-                        .restaurant(fetchedRestaurant.orElse(null))
-                        .build();
-
-                newOrder.addToOrderLineItems(OrderLineItem.builder()
-                        .menuItem(fetchedRestaurant
-                                .map(restaurant -> restaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
-                                .orElse(null))
-                        .quantity(2)
-                        .build());
-
-                return orderRepository.save(newOrder);
-            });
-
-            var orderId = savedOrder.getId();
-
-            System.out.println(savedOrder);
-
-            // add another order line item to order
-            var savedOrder2 = transactionTemplate.execute(status -> {
-                Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
-
-                OrderLineItem newOrderLineItem = OrderLineItem.builder()
-                        .quantity(1)
-                        .menuItem(fetchedRestaurant
-                                .map(existingRestaurant -> existingRestaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
-                                .orElse(null))
-                        .build();
-
-                var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
-                    // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
-                    presentFetchedOrder.getOrderLineItems().size();
-                    presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
-                    return orderRepository.save(presentFetchedOrder);
+                    return orderRepository.save(newOrder);
                 });
 
-                return fetchedOrder.orElse(null);
-            });
+                var orderId = savedOrder.getId();
 
-            System.out.println(savedOrder2);
+                System.out.println(savedOrder);
 
-            // add another order line item to order
-            var savedOrder3 = transactionTemplate.execute(status -> {
-                Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
+                // add another order line item to order
+                var savedOrder2 = transactionTemplate.execute(status -> {
+                    Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
 
-                OrderLineItem newOrderLineItem = OrderLineItem.builder()
-                        .quantity(1)
-                        .menuItem(fetchedRestaurant
-                                .map(existingRestaurant -> existingRestaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
-                                .orElse(null))
-                        .build();
+                    OrderLineItem newOrderLineItem = OrderLineItem.builder()
+                            .quantity(1)
+                            .menuItem(fetchedRestaurant
+                                    .map(existingRestaurant -> existingRestaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
+                                    .orElse(null))
+                            .build();
 
-                var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
-                    // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
-                    presentFetchedOrder.getOrderLineItems().size();
-                    presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
-                    return orderRepository.save(presentFetchedOrder);
+                    var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
+                        // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
+                        presentFetchedOrder.getOrderLineItems().size();
+                        presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
+                        return orderRepository.save(presentFetchedOrder);
+                    });
+
+                    return fetchedOrder.orElse(null);
                 });
 
-                return fetchedOrder.orElse(null);
-            });
+                System.out.println(savedOrder2);
 
-            System.out.println(savedOrder3);
+                // add another order line item to order
+                var savedOrder3 = transactionTemplate.execute(status -> {
+                    Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
+
+                    OrderLineItem newOrderLineItem = OrderLineItem.builder()
+                            .quantity(1)
+                            .menuItem(fetchedRestaurant
+                                    .map(existingRestaurant -> existingRestaurant.getMenu().getMenuCategories().get(0).getMenuItems().get(0))
+                                    .orElse(null))
+                            .build();
+
+                    var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
+                        // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
+                        presentFetchedOrder.getOrderLineItems().size();
+                        presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
+                        return orderRepository.save(presentFetchedOrder);
+                    });
+
+                    return fetchedOrder.orElse(null);
+                });
+
+                System.out.println(savedOrder3);
+
+            }
 
         };
-
     }
-
 }
