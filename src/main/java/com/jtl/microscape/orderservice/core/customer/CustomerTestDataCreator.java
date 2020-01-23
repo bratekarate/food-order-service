@@ -2,9 +2,11 @@ package com.jtl.microscape.orderservice.core.customer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class CustomerTestDataCreator {
 
     private final CustomerWriteRepository customerWriteRepository;
@@ -14,8 +16,6 @@ public class CustomerTestDataCreator {
                 .name("Hans")
                 .build();
 
-        customerWriteRepository.save(hans);
-
-        return hans;
+        return customerWriteRepository.save(hans);
     }
 }
