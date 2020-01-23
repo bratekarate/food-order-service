@@ -105,7 +105,7 @@ public class OrderServiceApplication {
                         .build();
 
                 var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
-                    // fix duplicate in lazy collection after addition by performing read operation on it
+                    // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
                     presentFetchedOrder.getOrderLineItems().size();
                     presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
                     return orderRepository.save(presentFetchedOrder);
@@ -128,7 +128,7 @@ public class OrderServiceApplication {
                         .build();
 
                 var fetchedOrder = orderRepository.findById(orderId).map(presentFetchedOrder -> {
-                    // fix duplicate in lazy collection after addition by performing read operation on it
+                    // workaround for HHH-6776 (duplicates in collection after addition) by performing read operation on it after fetch
                     presentFetchedOrder.getOrderLineItems().size();
                     presentFetchedOrder.addToOrderLineItems(newOrderLineItem);
                     return orderRepository.save(presentFetchedOrder);
