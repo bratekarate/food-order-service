@@ -1,11 +1,11 @@
 package com.jtl.microscape.orderservice;
 
 import com.jtl.microscape.orderservice.core.customer.Customer;
+import com.jtl.microscape.orderservice.core.customer.CustomerRepository;
 import com.jtl.microscape.orderservice.core.customer.CustomerTestDataCreator;
 import com.jtl.microscape.orderservice.core.order.Order;
 import com.jtl.microscape.orderservice.core.order.OrderLineItem;
 import com.jtl.microscape.orderservice.core.order.OrderRepository;
-import com.jtl.microscape.orderservice.core.restaurant.MenuCategorie;
 import com.jtl.microscape.orderservice.core.restaurant.Restaurant;
 import com.jtl.microscape.orderservice.core.restaurant.RestaurantRepository;
 import com.jtl.microscape.orderservice.core.restaurant.RestaurantTestDataCreator;
@@ -17,18 +17,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
 @AllArgsConstructor
 public class OrderServiceApplication {
-
-    @PersistenceContext
-    private final EntityManager entityManager;
 
     public static void main(String[] args) {
         SpringApplication.run(OrderServiceApplication.class, args);
@@ -38,33 +32,23 @@ public class OrderServiceApplication {
     public CommandLineRunner runner(OrderRepository orderRepository,
                                     CustomerTestDataCreator customerTestDataCreator,
                                     RestaurantTestDataCreator restaurantTestDataCreator,
+                                    CustomerRepository customerRepository,
                                     RestaurantRepository restaurantRepository,
                                     PlatformTransactionManager transactionManager) {
         return args -> {
 
             var transactionTemplate = new TransactionTemplate(transactionManager);
 
-            // create and persist shared restaurant entities with entity manager since repository is read only
+            // create and persist shared restaurant entities using read-only repositories
             var savedRestaurant = transactionTemplate.execute(status -> {
                 Restaurant newRestaurant = restaurantTestDataCreator.create();
-
-                entityManager.persist(newRestaurant);
-                entityManager.persist(newRestaurant.getMenu());
-
-                List<MenuCategorie> menuCategories = newRestaurant.getMenu().getMenuCategories();
-                menuCategories.forEach(entityManager::persist);
-                menuCategories.forEach(menuCategorie -> menuCategorie.getMenuItems().forEach(entityManager::persist));
-
-                entityManager.persist(newRestaurant);
 
                 return newRestaurant;
             });
 
-            // create and persist shared restaurant entities with entity manager since repository is read only
+            // create and persist shared restaurant entities using read-only repositories
             var savedCustomer = transactionTemplate.execute(status -> {
                 Customer newCustomer = customerTestDataCreator.create();
-
-                entityManager.persist(newCustomer);
 
                 return newCustomer;
             });
@@ -74,7 +58,7 @@ public class OrderServiceApplication {
                 Optional<Restaurant> fetchedRestaurant = restaurantRepository.findById(savedRestaurant.getId());
 
                 Order newOrder = Order.builder()
-                        .orderedBy(entityManager.find(Customer.class, savedCustomer.getId()))
+                        .orderedBy(customerRepository.findById(savedCustomer.getId()).orElse(null))
                         .placedAt(Instant.now())
                         .restaurant(fetchedRestaurant.orElse(null))
                         .build();

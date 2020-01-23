@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
-public class MenuCategorie {
+public class MenuCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +29,12 @@ public class MenuCategorie {
     @NotBlank
     private String caption;
 
-    @OneToMany(mappedBy = "menuCategorie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "menuCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<MenuItem> menuItems = new ArrayList<>();
 
     void addToMenuCategories(MenuItem menuItems) {
-        menuItems.setMenuCategorie(this);
+        menuItems.setMenuCategory(this);
         this.menuItems.add(menuItems);
     }
 
@@ -43,7 +43,7 @@ public class MenuCategorie {
     }
 
     void removeFromMenuCategories(MenuItem menuItem) {
-        menuItem.setMenuCategorie(null);
+        menuItem.setMenuCategory(null);
         menuItems.remove(menuItem);
     }
 
