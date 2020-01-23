@@ -14,6 +14,7 @@ import java.util.List;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class MenuCategorie {
 
     @Id
@@ -22,6 +23,7 @@ public class MenuCategorie {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Menu menu;
 
     @NotBlank

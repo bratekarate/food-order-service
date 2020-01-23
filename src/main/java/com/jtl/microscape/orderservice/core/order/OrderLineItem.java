@@ -2,10 +2,7 @@ package com.jtl.microscape.orderservice.core.order;
 
 import com.jtl.microscape.orderservice.core.restaurant.MenuItem;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,6 +19,7 @@ public class OrderLineItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
+    @ToString.Exclude
     private Order order;
 
     @NotNull

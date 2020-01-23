@@ -24,6 +24,7 @@ public class MenuItem {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private MenuCategorie menuCategorie;
 
     @NotNull

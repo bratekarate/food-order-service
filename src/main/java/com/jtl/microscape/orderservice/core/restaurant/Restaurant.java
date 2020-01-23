@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter(AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class Restaurant {
 
     @Id
