@@ -21,7 +21,7 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    type: org.apache.tomcat.jdbc.pool.DataSource
+    type: com.zaxxer.hikari.HikariDataSource
 
 # H2 DB will not be initialized when create.sql generation is enabled
 #spring.jpa.properties.javax.persistence.schema-generation.create-source: metadata
